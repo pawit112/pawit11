@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เซียมซี</title>
+    <link rel="stylesheet" href="siyle.css">
+    <style>
+    
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #6a1b9a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">หน้าหลัก</a>
+        <a href="fortune.html">ดูดวงวันเดือนปีเกิด</a>
+        <a href="fortune.html">เซียมซี</a>
+        <a href="love.html">ดูดวงความรัก</a>
+    </div>
+    <div class="container">
+        <h1>เสี่ยงเซียมซี</h1>
+        <button onclick="drawFortune()">เสี่ยงเซียมซี</button>
+        <div id="spinner" class="spinner" style="display:none;"></div>
+        <div class="result" id="fortune-result"></div>
+        <div class="result" id="lucky-color"></div>
+        <div class="result" id="lucky-number"></div>
+    </div>
+
+    <script>
+        const fortunes = [
+        "โชคดีในความรักจะมาในเร็วๆ นี้",
+            "ระวังการตัดสินใจที่รีบเร่งในช่วงนี้",
+            "การเงินของคุณจะมีการปรับปรุงในไม่ช้า",
+            "คุณจะได้พบกับโอกาสใหม่ในอนาคตอันใกล้",
+            "ระวังคนที่เข้ามาหาคุณในช่วงนี้ อาจมีเจตนาที่ไม่ดี",
+            "คุณจะต้องเผชิญกับอุปสรรคในงาน แต่คุณจะสามารถผ่านมันไปได้",
+            "สุขภาพของคุณจะดีขึ้นในเร็วๆ นี้",
+            "คุณจะได้เดินทางไปสถานที่ที่ไม่เคยไปมาก่อน",
+            "มีโอกาสดีๆ เข้ามาในเรื่องการงาน",
+            "ความรักของคุณในตอนนี้กำลังไปในทิศทางที่ดี",
+            "คุณจะได้รับข่าวดีจากคนที่คุณรอคอย",
+            "ในอนาคตคุณจะมีการเติบโตในด้านการเงิน",
+            "การเดินทางของคุณจะเป็นไปอย่างราบรื่น",
+            "คุณจะได้พบเพื่อนใหม่ที่มีความหมายในชีวิต",
+            "ความเครียดของคุณจะลดลงในไม่ช้า",
+            "มีโอกาสที่ดีในการพัฒนาทักษะใหม่ๆ",
+            "การตัดสินใจของคุณในตอนนี้จะส่งผลดีในอนาคต",
+            "โชคดีจะเข้ามาหาคุณในช่วงนี้",
+            "คุณจะได้รับการยอมรับจากคนรอบข้างในเรื่องที่คุณทำ",
+            "ต้องระวังการตัดสินใจในเรื่องการเงิน",
+            "คุณจะได้รับโอกาสใหม่ในด้านความรัก",
+            "คนที่คุณคิดถึงจะกลับมาในชีวิตคุณ",
+            "ช่วงนี้คุณต้องให้ความสำคัญกับการทำงาน",
+            "การลงทุนในช่วงนี้อาจมีผลตอบแทนที่ดี",
+            "คุณจะพบกับความสงบในจิตใจ",
+            "ความรักของคุณในตอนนี้ยังคงท้าทาย",
+            "จะมีคนช่วยเหลือคุณในเรื่องที่คุณไม่คาดคิด",
+            "ความสัมพันธ์ของคุณจะพัฒนาไปในทิศทางที่ดี",
+            "บางครั้งการตัดสินใจที่ช้าอาจนำมาซึ่งผลดี",
+            "คุณจะได้รับสิ่งที่คาดหวังในอนาคตอันใกล้",
+            "ให้ระวังเรื่องความประมาทในการทำงาน",
+            "การเดินทางในครั้งนี้จะมีประโยชน์ในอนาคต",
+            "คุณจะต้องใช้เวลามากขึ้นในการพัฒนาความสัมพันธ์",
+            "จะมีคนมอบโอกาสดีๆ ให้คุณในเรื่องการงาน",
+            "การตัดสินใจในครั้งนี้จะมีผลต่ออนาคตของคุณ",
+            "คุณจะได้รับการสนับสนุนจากคนรอบข้าง",
+            "คุณจะพบกับทางเลือกใหม่ๆ ในชีวิต",
+            "ความรักของคุณจะมีการเปลี่ยนแปลงครั้งใหญ่",
+            "คุณจะได้รับคำแนะนำที่ดีจากผู้ใหญ่",
+            "ความสัมพันธ์ในครอบครัวจะกลับมาดีขึ้น",
+            "ในช่วงนี้การเงินของคุณจะมีการขยับขึ้น",
+            "คุณจะได้รับข่าวจากคนที่คิดถึง",
+            "มีโอกาสในการได้รับผลตอบแทนจากการลงทุน",
+            "คุณจะต้องมองหาความสงบในช่วงที่ยากลำบาก",
+            "ชีวิตของคุณจะเข้าสู่ช่วงเวลาที่ดีขึ้น",
+            "การตัดสินใจครั้งนี้จะมีผลลัพธ์ที่ดี",
+            "คุณจะได้พบกับโอกาสทางการงานที่สำคัญ",
+            "ความรักของคุณจะมีการเริ่มต้นใหม่",
+            "ในเร็วๆ นี้จะมีการเปลี่ยนแปลงในชีวิตของคุณ",
+            "การงานของคุณจะก้าวหน้าในทิศทางที่ดี",
+            "ความพยายามของคุณจะนำมาซึ่งความสำเร็จ",
+            // เพิ่มเติมคำทำนายที่เหลือจนถึง 1000 คำ
+        ];
+
+        const luckyColors = ["แดง", "เขียว", "น้ำเงิน", "เหลือง", "ขาว", "ดำ", "ส้ม"];
+        const luckyNumbers = [1, 3, 5, 7, 9, 11, 13, 21, 25, 28, 33];
+
+        function drawFortune() {
+            document.getElementById('spinner').style.display = 'block';
+            document.getElementById('fortune-result').textContent = "กำลังเสี่ยงเซียมซี...";
+
+            // Simulate a delay for effect
+            setTimeout(() => {
+                const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+                const randomColor = luckyColors[Math.floor(Math.random() * luckyColors.length)];
+                const randomNumber = luckyNumbers[Math.floor(Math.random() * luckyNumbers.length)];
+
+                document.getElementById('fortune-result').textContent = randomFortune;
+                document.getElementById('lucky-color').textContent = "สีมงคลของคุณคือ: " + randomColor;
+                document.getElementById('lucky-number').textContent = "เลขมงคลของคุณคือ: " + randomNumber;
+
+                document.getElementById('spinner').style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

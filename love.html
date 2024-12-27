@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ดูดวงความรัก</title>   
+    <link rel="stylesheet" href="siyle.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 20px;
+            justify-content: center;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            transition: background-color 0.3s, transform 0.2s;
+            border-radius: 8px;
+        }
+        .cell:hover {
+            background-color: #f7a1b4;
+            transform: scale(1.1);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .download-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            margin-top: 20px;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .download-bar .progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff7b7b, #ff7be7, #9b7bff, #7bafff, #7bff7b);
+            animation: loading 3s linear infinite;
+            border-radius: 10px;
+        }
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        button {
+            background-color: #ff7b7b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            margin-top: 20px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ff4c4c;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">หน้าหลัก</a>
+        <a href="fortune.html">ดูดวงวันเดือนปีเกิด</a>
+        <a href="birthday.html">เซียมซี</a>
+        <a href="love.html">ดูดวงความรัก</a>
+    </div>  
+    <div class="container">
+        <h1>ดูดวงความรัก</h1>
+        <div class="grid">
+            <div class="cell" onclick="drawLoveFortune('โชคดีในความรักจะมาในเร็วๆ นี้')">❤️</div>
+            <div class="cell" onclick="drawLoveFortune('ความรักของคุณจะต้องใช้เวลานานแต่จะได้ผลดีในที่สุด')">💔</div>
+            <div class="cell" onclick="drawLoveFortune('จะมีคนใหม่เข้ามาในชีวิตคุณ')">💘</div>
+            <div class="cell" onclick="drawLoveFortune('ความรักของคุณกำลังไปในทิศทางที่ดี')">💓</div>
+            <div class="cell" onclick="drawLoveFortune('คุณจะต้องเผชิญกับอุปสรรคในความรัก')">💌</div>
+            <div class="cell" onclick="drawLoveFortune('มีโอกาสพบรักใหม่ที่ไม่คาดคิด')">💖</div>
+            <div class="cell" onclick="drawLoveFortune('คุณจะได้พบกับคู่รักที่เข้าใจกันอย่างลึกซึ้ง')">❤️‍🔥</div>
+            <div class="cell" onclick="drawLoveFortune('คุณต้องระมัดระวังการเข้าใจผิดในความรัก')">💗</div>
+        </div>
+
+        <!-- หลอดดาวน์โหลด -->
+        <div id="download-bar" class="download-bar" style="display:none;">
+            <div id="progress" class="progress"></div>
+        </div>
+        
+        <div class="result" id="love-result"></div>
+
+        <!-- ปุ่มแสดงคำทำนาย -->
+        <button onclick="startFortune()">รับคำทำนาย</button>
+    </div>
+
+    <script>
+        function drawLoveFortune(fortune) {
+            document.getElementById('progress').style.width = '0%'; // reset progress
+            document.getElementById('love-result').textContent = "กำลังทำนายความรัก...";
+
+            // Simulate a delay for effect
+            setTimeout(() => {
+                document.getElementById('love-result').textContent = "คำทำนาย: " + fortune;
+            }, 2000);
+        }
+
+        function startFortune() {
+            // แสดงหลอดดาวน์โหลด
+            document.getElementById('download-bar').style.display = 'block';
+            document.getElementById('progress').style.width = '0%';
+
+            // เพิ่ม progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.getElementById('progress').style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 150);
+
+            // แสดงคำทำนายหลังจากรอ
+            setTimeout(() => {
+                const randomFortune = [
+                    "โชคดีในความรักจะมาในเร็วๆ นี้",
+                    "ความรักของคุณจะต้องใช้เวลานานแต่จะได้ผลดีในที่สุด",
+                    "จะมีคนใหม่เข้ามาในชีวิตคุณ",
+                    "ความรักของคุณกำลังไปในทิศทางที่ดี"
+                ];
+                const randomIndex = Math.floor(Math.random() * randomFortune.length);
+                document.getElementById('love-result').textContent = "คำทำนาย: " + randomFortune[randomIndex];
+
+                // ซ่อนหลอดดาวน์โหลดเมื่อแสดงคำทำนาย
+                document.getElementById('download-bar').style.display = 'none';
+            }, 3000); // เลื่อนเวลาแสดงคำทำนาย
+        }
+    </script>
+</body>
+</html>
